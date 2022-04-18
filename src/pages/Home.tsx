@@ -1,20 +1,39 @@
+import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
 import "../styles/auth.scss"
+import IllustationImg from "../assets/images/illustration.svg"
+import logoImg from "../assets/images/logo.svg"
+import googleIconImg from "../assets/images/google-icon.svg"
+import { auth, GoogleAuthProvider, signInWithPopup } from "../services/firebase"
 
 function Home() {
+    const navigate = useNavigate()
+
+
+    function handleCreateRoom() {
+        const provider = new GoogleAuthProvider()
+ 
+        signInWithPopup(auth, provider)
+        .then(result => {
+            console.log(result)
+
+            navigate('/rooms/new')
+        })
+    }
+
     return(
         <div id="page-auth">
             <aside>
-                <img src="" alt="Ilustração simbolizando perguntas e respostas" />
+                <img src={ IllustationImg } alt="Ilustração simbolizando perguntas e respostas" />
                 <strong>Crie salas de Q&amp;A ao-vivo</strong>
                 <p>Tire as dúvidas da sua audiencia em tempo-real</p>
             </aside>
 
             <main>
                 <div className="main-content">
-                    <img src="" alt="Letmeask logo" />
-                    <Button className="create-room">
-                        <img src="" alt="Logo do Google" />
+                    <img src={ logoImg } alt="Letmeask logo" />
+                    <Button onClick={ handleCreateRoom } className="create-room">
+                        <img src={ googleIconImg } alt="Logo do Google" />
                         Crie sua sala com a Google
                     </Button>
                     <div className="separator">ou entre em um sala</div>
