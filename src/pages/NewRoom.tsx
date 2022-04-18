@@ -1,11 +1,16 @@
-import Button from "../components/Button"
 import { Link } from "react-router-dom"
-import IllustationImg from "../assets/images/illustration.svg"
-import logoImg from "../assets/images/logo.svg"
+
+import Button from "../components/Button"
 
 import "../styles/auth.scss"
 
+import IllustationImg from "../assets/images/illustration.svg"
+import logoImg from "../assets/images/logo.svg"
+import { useAuth } from "../hooks/useAuth"
+
 function NewRoom() {
+    //const { user } = useAuth()
+
     return(
         <div id="page-auth">
             <aside>
@@ -23,8 +28,7 @@ function NewRoom() {
                         type="text"
                         placeholder="Nome da sala"
                          />
-
-                         <Button type="submit">Criar sala</Button>
+                        <Button type="submit">Criar sala</Button>
                     </form>
                     <p>Quer entrar em uma sala existente? <Link to="/">Clique aqui</Link></p>
                 </div>
