@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom"
-import { auth, GoogleAuthProvider, signInWithPopup } from "../services/firebase"
 
 import Button from "../components/Button"
 
@@ -43,7 +42,6 @@ function Home() {
                         type="text"
                         placeholder="Digite o código da sala"
                          />
-
                          <Button type="submit">Entrar na sala</Button>
                     </form>
                 </div>
