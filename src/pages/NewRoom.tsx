@@ -1,14 +1,14 @@
 import { FormEvent, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
+import { useAuth } from "../hooks/useAuth"
+import { database, ref, push, set } from "../services/firebase"
 import Button from "../components/Button"
-
-import "../styles/auth.scss"
 
 import IllustationImg from "../assets/images/illustration.svg"
 import logoImg from "../assets/images/logo.svg"
-import { useAuth } from "../hooks/useAuth"
-import { database, ref, push, set } from "../services/firebase"
+
+import "../styles/auth.scss"
 
 function NewRoom() {
     const { user } = useAuth()

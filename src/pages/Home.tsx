@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom"
 import { FormEvent, useState } from "react"
+
 import { ref, get, database } from "../services/firebase"
 import { useAuth } from "../hooks/useAuth"
-
 import Button from "../components/Button"
-
-import "../styles/auth.scss"
 
 import IllustationImg from "../assets/images/illustration.svg"
 import logoImg from "../assets/images/logo.svg"
 import googleIconImg from "../assets/images/google-icon.svg"
+
+import "../styles/auth.scss"
 
 function Home() {
     const navigate = useNavigate()
