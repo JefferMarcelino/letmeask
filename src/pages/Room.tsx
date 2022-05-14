@@ -1,8 +1,9 @@
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 import { getDatabase, ref, push, remove } from "firebase/database";
 import { useAuth } from "../hooks/useAuth"
+import { AuthContext } from "../contexts/AuthContext";
 import Button from "../components/Button"
 import RoomCode from "../components/RoomCode"
 
@@ -17,6 +18,8 @@ type RoomParams = {
 
 function Room() {
     const database = getDatabase()
+
+    const { signInWithGoogle } = useContext(AuthContext)
 
     const { user } = useAuth()
     
@@ -97,7 +100,12 @@ function Room() {
                                 <span>{ user.name }</span>
                             </div>
                         ) : (
-                            <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
+                            <span>Para enviar uma pergunta, <button
+                            onClick={ async () => {
+                                console.log()
+                                await signInWithGoogle()
+                            }}
+                            >faça seu login</button>.</span>
                         )}
                         <Button type="submit" disabled={ !user }>Enviar pergunta</Button>
                     </div>
