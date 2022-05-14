@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
 import { useAuth } from "../hooks/useAuth"
-import { database, ref, push, set } from "../services/firebase"
+import { getDatabase, ref, push, set } from "firebase/database";
 import Button from "../components/Button"
 
 import IllustationImg from "../assets/images/illustration.svg"
@@ -12,6 +12,8 @@ import "../styles/auth.scss"
 
 function NewRoom() {
     const { user } = useAuth()
+
+    const database = getDatabase()
 
     const [ newRoom, setNewRoom ] = useState("")
     const navigate = useNavigate()

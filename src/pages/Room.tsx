@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
-import { ref, database, push, onValue } from "../services/firebase"
+import { getDatabase, ref, push, remove } from "firebase/database";
 import { useAuth } from "../hooks/useAuth"
 import Button from "../components/Button"
 import RoomCode from "../components/RoomCode"
@@ -10,16 +10,19 @@ import logoImg from "../assets/images/logo.svg"
 import "../styles/room.scss"
 import { Question } from "../components/Question"
 import { useRoom } from "../hooks/useRoom"
-import { remove } from "firebase/database"
 
 type RoomParams = {
     id: string;
 }
 
 function Room() {
+    const database = getDatabase()
+
     const { user } = useAuth()
+    
     const params = useParams<RoomParams>()
     const roomId = params.id
+
     const [ newQuestion, setNewQuestion ] = useState("")
     const { questions, title } = useRoom(roomId)
     
@@ -31,6 +34,7 @@ function Room() {
         }
 
         if(!user) {
+            alert("You must be logged in")
             throw new Error("You must be logged in")
         }
 
@@ -50,12 +54,17 @@ function Room() {
     }
 
     async function handleLikeQuestion(questionsId: string, likeId: string | undefined) {
+        console.log("QId", questionsId)
+        console.log("LId", likeId)
+
         if(likeId) {
             const newLike = await ref(database, `rooms/${roomId}/questions/${questionsId}/likes/${likeId}`)
             remove(newLike)
+            console.log("remover")
         } else {
             const newLike = await ref(database, `rooms/${roomId}/questions/${questionsId}/likes`)
             push(newLike, {authorId: user?.id})
+            console.log("like")
         }
     }
 
@@ -96,6 +105,7 @@ function Room() {
 
                 <div className="question-list">
                     { questions.map(question => {
+                        console.log("Q", question)
                         return(
                             <Question
                             key={ question.id }

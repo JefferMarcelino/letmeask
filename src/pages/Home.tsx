@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom"
 import { FormEvent, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-import { ref, get, database } from "../services/firebase"
+import { ref, get, getDatabase } from "firebase/database"
 import { useAuth } from "../hooks/useAuth"
 import Button from "../components/Button"
 
@@ -31,12 +31,17 @@ function Home() {
             return;
         }
 
-        const db = database
+        const db = getDatabase()
         const roomRef = get(ref(db, `rooms/${roomCode}`))
 
         if(!(await roomRef).exists()) {
             alert("Room does not exists.")
             return
+        }
+
+        if((await roomRef).val().endedAt) {
+            alert("Room already closed.")
+            return;
         }
 
         navigate(`/rooms/${roomCode}`)

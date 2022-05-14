@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 import { ref, database, push, onValue } from "../services/firebase"
 import { useAuth } from "../hooks/useAuth"
@@ -11,18 +11,27 @@ import deleteImg from "../assets/images/delete.svg"
 import "../styles/room.scss"
 import { Question } from "../components/Question"
 import { useRoom } from "../hooks/useRoom"
-import { remove } from "firebase/database"
+import { remove, update } from "firebase/database"
 
 type RoomParams = {
     id: string;
 }
 
 function AdminRoom() {
+    const navigate = useNavigate()
     const { user } = useAuth()
     const params = useParams<RoomParams>()
     const roomId = params.id
     const [ newQuestion, setNewQuestion ] = useState("")
     const { questions, title } = useRoom(roomId)
+
+    async function handleEndRoom() {
+        update(await ref(database, `rooms/${roomId}`), {
+            endedAt: new Date()
+        })
+
+        navigate('/')
+    }
 
     async function handleDeleteQuestion(questionId: string) {
         if (confirm("Tem certeza que voce deseja exluir esta pergunta?")) {
@@ -38,7 +47,10 @@ function AdminRoom() {
                     <img src={ logoImg } alt="Letmeask" />
                     <div>
                         <RoomCode code={ roomId } />
-                        <Button isOutlined>Encerrar sala</Button>
+                        <Button 
+                        isOutlined
+                        onClick={ handleEndRoom }
+                        >Encerrar sala</Button>
                     </div>
                 </div>
             </header>
